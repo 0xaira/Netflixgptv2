@@ -1,0 +1,3 @@
+Set up the Project and Tailwind
+Setup Routing for different pages 
+Build the Landing Page
