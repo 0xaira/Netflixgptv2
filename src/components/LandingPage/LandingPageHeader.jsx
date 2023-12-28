@@ -1,7 +1,7 @@
 import React from 'react'
 import background from '../../assets/background.jpg'
-import logo from '../../assets/logo.png'
 import gptlogo from '../../assets/gptlogo.png'
+import { Link } from 'react-router-dom';
 
 const LandingPageHeader = () => {
   return (
@@ -51,9 +51,12 @@ const LandingPageHeader = () => {
 
                 </div>
 
-                <button class="bg-red-600 px-3 rounded h-8 text-white mt-4 ">
-                  Sign In
-                </button>
+
+                <Link to="/login">
+                  <button className="bg-red-600 px-3 rounded h-8 text-white mt-4 ">
+                    Sign In
+                  </button>
+                </Link>
 
               </div>
             </div>
@@ -63,10 +66,11 @@ const LandingPageHeader = () => {
             <h1 className='sm:text-[50px] text-[35px] font-bold '>Enjoy big movies, hit series and more from ₹149.</h1>
             <h4 className='text-[25px] py-[20px]'>Join today. Cancel anytime.</h4>
             <h5 className='text-[25px] '>Ready to watch? Enter your email to create or restart your membership.</h5>
-
+            <Link to="/login">
             <button className="bg-red-600 p-3 rounded font-bold ml-5 w-60 max-[960px]:w-40 max-[480px]:mt-[30px] mt-12">
-                <p className="mx-auto text-2xl max-[960px]:text-xl"><label htmlFor="email">Get Started {'>'}</label></p>
-              </button>
+              <p className="mx-auto text-2xl max-[960px]:text-xl"><label htmlFor="email">Get Started {'>'}</label></p>
+            </button>
+            </Link>
           </div>
 
         </div>

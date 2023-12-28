@@ -1,5 +1,5 @@
 import { useState } from 'react';
-
+import { Link } from 'react-router-dom';
 const FAQItem = ({ question, answer, index, openIndex, setOpenIndex }) => {
   const isOpen = index === openIndex;
 
@@ -125,9 +125,11 @@ const MainSection5 = () => {
   </div>
 
   <div className='mt-3 sm:mt-0 sm:ml-5'>
+  <Link to="/login">
     <button className="bg-red-600 p-3 rounded font-bold w-60 max-[960px]:w-40 max-[480px]:mt-[30px] text-white">
       <p className="mx-auto text-2xl max-[960px]:text-xl">Get Started {'>'}</p>
     </button>
+    </Link>
   </div>
 </div>
 
