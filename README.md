@@ -5,3 +5,5 @@
 - Build the Landing Page
 - Sign In and Sign Up Form 
 - Form Validation
+- Authentication
+- 
