@@ -1,28 +1,27 @@
-import { useState, useRef } from "react";
+import { checkValidData } from '../utils/validate';
 import Header from "./Header";
 import poster from '../assets/background.jpg';
-import { checkValidData } from '../utils/validate';
+import { useState, useRef } from "react";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { updateProfile } from "firebase/auth";
-import { useDispatch } from "react-redux";
-import { addUser } from "../utils/userSlice";
-
-
+// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 // TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyBqel6kujCmela7ZD3nJc9eW_XnCXudBtM",
-  authDomain: "netflixgpt-7684d.firebaseapp.com",
-  projectId: "netflixgpt-7684d",
-  storageBucket: "netflixgpt-7684d.appspot.com",
-  messagingSenderId: "1052821090463",
-  appId: "1:1052821090463:web:9ca0321c35947e877a72aa",
-  measurementId: "G-7S3XHKH273"
+  apiKey: "AIzaSyDM3UvqJAQz0kuLAL0wCQSbB0WFh6e1jKY",
+  authDomain: "netflixgpt-39b4f.firebaseapp.com",
+  projectId: "netflixgpt-39b4f",
+  storageBucket: "netflixgpt-39b4f.appspot.com",
+  messagingSenderId: "761075110806",
+  appId: "1:761075110806:web:1b8bf49c7cc873f4d5c3b7",
+  measurementId: "G-EZVFC363YW"
 };
-
 
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
@@ -31,71 +30,53 @@ const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
   const email = useRef(null);
   const password = useRef(null);
-  const name = useRef(null);
+  const [errorMessage, setErrorMessage] = useState(null);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [errorMessage, seterrorMessage] = useState(null);
+
   const handleButtonClick = () => {
     const message = checkValidData(email.current.value, password.current.value);
-    seterrorMessage(message);
+    setErrorMessage(message);
     if (message) return;
 
     const auth = getAuth();
 
-
     if (!isSignInForm) {
-      createUserWithEmailAndPassword(
-        auth,
-        email.current.value,
-        password.current.value
-      )
+      createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
         .then((userCredential) => {
           const user = userCredential.user;
           updateProfile(user, {
             displayName: name.current.value,
-            photoURL: "",
+            photoURL: "https://e1.pxfuel.com/desktop-wallpaper/447/176/desktop-wallpaper-gojo-satoru-gojo-pfp.jpg",
           })
-          .then(() => {
-            navigate("/browse");
-            const { uid, email, displayName, photoURL } = auth.currentUser;
-            dispatch(
-              addUser({
-                uid: uid,
-                email: email,
-                displayName: displayName,
-                photoURL: photoURL,
-              })
-            );
-          })
+            .then(() => {
+              navigate("/browse");
+              // ... (dispatch logic or any other actions needed after successful sign-up)
+            })
             .catch((error) => {
-              seterrorMessage(error.message);
+              setErrorMessage(error.message);
             });
         })
         .catch((error) => {
-          seterrorMessage(error.message);
+          setErrorMessage(error.message);
         });
     } else {
       signInWithEmailAndPassword(auth, email.current.value, password.current.value)
         .then((userCredential) => {
-
           const user = userCredential.user;
-          console.log(user);
-          navigate("/browse");
-
+          navigate("/browse"); // Redirect to browse page upon successful sign-in
         })
         .catch((error) => {
-          seterrorMessage(error.message);
+          setErrorMessage(error.message); // Set error message if sign-in fails
         });
     }
-  }
-
+  };
 
   const toggleSignInForm = () => {
     setIsSignInForm(!isSignInForm);
   };
-
   return (
     <div>
+
       <Header />
       <div className="relative">
         <div className="absolute w-full">
@@ -103,6 +84,7 @@ const Login = () => {
           <img src={poster} alt='poster' className='w-full' style={{ zIndex: 0 }} />
         </div>
       </div>
+
       <form
         onSubmit={(e) => e.preventDefault()}
         className="w-3/12 absolute p-12 bg-black my-36 mx-auto right-0 left-0 text-white rounded-lg bg-opacity-80"
@@ -113,22 +95,20 @@ const Login = () => {
 
         {!isSignInForm && (
           <input
-            ref={name}
             type="text"
             placeholder="Full Name"
             className="p-4 my-4 w-full bg-gray-700"
           />
         )}
-
         <input
-          ref={email}
           type="text"
+          ref={email}
           placeholder="Email Address"
           className="p-4 my-4 w-full bg-gray-700"
         />
         <input
-          ref={password}
           type="password"
+          ref={password}
           placeholder="Password"
           className="p-4 my-4 w-full bg-gray-700"
         />
@@ -158,5 +138,4 @@ const Login = () => {
     </div>
   );
 };
-
 export default Login;
